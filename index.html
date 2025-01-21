@@ -32,24 +32,33 @@
   <script>
     function calculateValues() {
       const ats = parseFloat(document.getElementById('ats').value) || 0;
-      const as = parseFloat(document.getElementById('as').value) || 0;
       const allowedLoan = parseFloat(document.getElementById('allowedLoan').value) || 0;
+      const allowedLoanPercentage = (allowedLoan / ats) * 100;
 
       // Calculations
-      const sanctionedLoan = (ats * allowedLoan) / 100;
-      const marginAmount = ((100 - allowedLoan) * ats) / 100;
-      const stampAmount = (6 / 100) * ats;
+      const sanctionedLoan = (ats * allowedLoanPercentage) / 100;
+      const tmAmount = (1 / 100) * ats;
+      const stampAmount = (5 / 100) * ats;
       const registryAmount = (1 / 100) * ats;
-      const leftAmount = as - sanctionedLoan;
-      const totalAmount = stampAmount + registryAmount + leftAmount;
+      const tdsAmount = (1 / 100) * ats;
+      const seller5Percent = (5 / 100) * ats;
+      const amountToSeller = ats - seller5Percent - tdsAmount;
+      const brokerAmount = (1 / 100) * ats;
+      const fundsAfterSeller = sanctionedLoan - (ats - seller5Percent);
+      const totalRegistryStampTmTds = registryAmount + stampAmount + tmAmount + tdsAmount;
 
       // Display Results
+      document.getElementById('allowedLoanPercentage').innerText = allowedLoanPercentage.toFixed(2);
       document.getElementById('sanctionedLoan').innerText = sanctionedLoan.toFixed(2);
-      document.getElementById('marginAmount').innerText = marginAmount.toFixed(2);
+      document.getElementById('tdsAmount').innerText = tdsAmount.toFixed(2);
+      document.getElementById('tmAmount').innerText = tmAmount.toFixed(2);
       document.getElementById('stampAmount').innerText = stampAmount.toFixed(2);
       document.getElementById('registryAmount').innerText = registryAmount.toFixed(2);
-      document.getElementById('leftAmount').innerText = leftAmount.toFixed(2);
-      document.getElementById('totalAmount').innerText = totalAmount.toFixed(2);
+      document.getElementById('seller5Percent').innerText = seller5Percent.toFixed(2);
+      document.getElementById('amountToSeller').innerText = amountToSeller.toFixed(2);
+      document.getElementById('fundsAfterSeller').innerText = fundsAfterSeller.toFixed(2);
+      document.getElementById('brokerAmount').innerText = brokerAmount.toFixed(2);
+      document.getElementById('totalRegistryStampTmTds').innerText = totalRegistryStampTmTds.toFixed(2);
     }
   </script>
 </head>
@@ -60,22 +69,22 @@
     <input type="number" id="ats" placeholder="Enter ATS value" oninput="calculateValues()" /> Lacks
   </div>
   <div class="form-group">
-    <label for="as">Actual Sale (AS):</label>
-    <input type="number" id="as" placeholder="Enter AS value" oninput="calculateValues()" /> Lacks
-  </div>
-  <div class="form-group">
-    <label for="allowedLoan">Allowed Loan (%):</label>
-    <input type="number" id="allowedLoan" placeholder="Enter Allowed Loan Percentage" oninput="calculateValues()" />
+    <label for="allowedLoan">Allowed Loan: (<span id="allowedLoanPercentage">0</span> %)</label>
+    <input type="number" id="allowedLoan" placeholder="Enter Allowed Loan" oninput="calculateValues()" /> Lacks
   </div>
 
   <div class="result">
     <p>Sanction Loan Amount: <span id="sanctionedLoan">0.00</span> Lacks</p>
-    <p>Margin Amount: <span id="marginAmount">0.00</span> Lacks</p>
     <div class="imp_result">
-        <p>Stamp Amount (6% of ATS): <span id="stampAmount">0.00</span> Lacks</p>
-        <p>Registry Amount (1% of ATS): <span id="registryAmount">0.00</span> Lacks</p>
-        <p>Left To Seller Amount: <span id="leftAmount">0.00</span> Lacks</p>
-        <p>Total Amount Required after loan: <span id="totalAmount">0.00</span> Lacks</p>
+      <p>TDS Amount (1% of ATS): <span id="tdsAmount">0.00</span> Lacks</p>
+      <p>TM Amount (1% of ATS): <span id="tmAmount">0.00</span> Lacks</p>
+      <p>Stamp Amount (5% of ATS): <span id="stampAmount">0.00</span> Lacks</p>
+      <p>Registry Amount (1% of ATS): <span id="registryAmount">0.00</span> Lacks</p>
+      <p>5% of ATS Given to Seller: <span id="seller5Percent">0.00</span> Lacks</p>
+      <p>Total Amount for Registry, Stamp, TM and TDS: <span id="totalRegistryStampTmTds">0.00</span> Lacks</p>
+      <p>Total Amount to Seller after 5% and TDS Deduction: <span id="amountToSeller">0.00</span> Lacks</p>
+      <p>Total Amount Left from Loan after Seller Payment: <span id="fundsAfterSeller">0.00</span> Lacks</p>
+      <p>Broker Amount (1% of ATS): <span id="brokerAmount">0.00</span> Lacks</p>
     </div>
   </div>
 </body>
